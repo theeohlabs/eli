@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ELI | Everyday Log Input</title>
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.jade.min.css"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <!-- JS -->
+    <script src="./js/app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <hgroup class="header__title-group">
+        <h1>ELI</h1>
+        <p>Everyday Log Input</p>
+      </hgroup>
+      <button id="open-log-dialog" type="button">Create Log</button>
+    </header>
+
+    <main>
+      <section id="logs"></section>
+    </main>
+
+    <footer class="footer">
+      <small>Developed by Theo Snyman</small>
+    </footer>
+
+    <dialog id="log-dialog">
+      <article>
+        <header>
+          <button
+            aria-label="Close"
+            rel="prev"
+            id="close-log-dialog"
+            type="button"
+          ></button>
+          <p>
+            <strong>Add to ELI 📝</strong>
+          </p>
+        </header>
+        <form>
+          <fieldset>
+            <label for="log-title"
+              >Title <input name="log-title" id="log-title"
+            /></label>
+            <label for="log-body">
+              Body
+              <textarea
+                name="log-body"
+                id="log-body"
+                rows="4"
+                aria-describedby="log-body-helper"
+              ></textarea>
+              <small id="log-body-helper">
+                Logs cannot be edited once created so ensure you are as honest
+                with yourself as possible.
+              </small>
+            </label>
+          </fieldset>
+          <input type="submit" value="Add" id="add-log" />
+        </form>
+      </article>
+    </dialog>
+  </body>
+</html>
