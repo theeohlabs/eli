@@ -33,6 +33,14 @@ LOG_FORM.addEventListener("submit", (e) => {
   addLog();
 });
 
+LOG_TITLE_INPUT.addEventListener("input", () => {
+  LOG_TITLE_INPUT.removeAttribute("aria-invalid");
+});
+
+LOG_BODY_INPUT.addEventListener("input", () => {
+  LOG_BODY_INPUT.removeAttribute("aria-invalid");
+});
+
 /**
  * FUNCTIONS
  */
@@ -42,9 +50,8 @@ const openLogDialog = () => {
 };
 
 const closeLogDialog = () => {
+  clearForm();
   LOG_DIALOG.toggleAttribute("open");
-  LOG_TITLE_INPUT.value = "";
-  LOG_BODY_INPUT.value = "";
   console.log("Log create dialog closed and inputs cleared");
 };
 
@@ -52,6 +59,19 @@ const addLog = () => {
   // Get input data
   const title = LOG_TITLE_INPUT.value;
   const body = LOG_BODY_INPUT.value;
+
+  // Ensure neither title nor body is empty
+  if (!title && !body) {
+    LOG_TITLE_INPUT.setAttribute("aria-invalid", "true");
+    LOG_BODY_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  } else if (!title) {
+    LOG_TITLE_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  } else if (!body) {
+    LOG_BODY_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  }
 
   // Push data to logs
   logs.push({
@@ -65,9 +85,8 @@ const addLog = () => {
   console.log("Log created and saved");
 
   // Close dialog and clear inputs after submission
+  clearForm();
   LOG_DIALOG.toggleAttribute("open");
-  LOG_TITLE_INPUT.value = "";
-  LOG_BODY_INPUT.value = "";
   console.log("Log create dialog closed and inputs cleared");
 
   // Render
@@ -110,6 +129,13 @@ const renderLogs = () => {
 const formatDate = (date) => {
   const logDate = new Date(date);
   return logDate.toLocaleDateString("en-ZA");
+};
+
+const clearForm = () => {
+  LOG_TITLE_INPUT.value = "";
+  LOG_BODY_INPUT.value = "";
+  LOG_TITLE_INPUT.removeAttribute("aria-invalid");
+  LOG_BODY_INPUT.removeAttribute("aria-invalid");
 };
 
 /**
