@@ -9,6 +9,9 @@ const LOG_TITLE_INPUT = document.getElementById("log-title");
 const LOG_BODY_INPUT = document.getElementById("log-body");
 const ADD_LOG_BTN = document.getElementById("add-log");
 const LOGS_SECTION = document.getElementById("logs");
+const THEME_TOGGLE_BTN = document.getElementById("theme-toggle");
+const PAGE_ROOT = document.querySelector("html");
+const TOAST = document.getElementById("toast");
 
 /**
  * DATA
@@ -26,6 +29,11 @@ document.querySelector("body").addEventListener("click", (e) => {
   if (e.target === CLOSE_LOG_DIALOG_BTN) {
     closeLogDialog();
   }
+  if (e.target === THEME_TOGGLE_BTN) {
+    const currentTheme = PAGE_ROOT.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(newTheme);
+  }
 });
 
 LOG_FORM.addEventListener("submit", (e) => {
@@ -33,18 +41,26 @@ LOG_FORM.addEventListener("submit", (e) => {
   addLog();
 });
 
+LOG_TITLE_INPUT.addEventListener("input", () => {
+  LOG_TITLE_INPUT.removeAttribute("aria-invalid");
+});
+
+LOG_BODY_INPUT.addEventListener("input", () => {
+  LOG_BODY_INPUT.removeAttribute("aria-invalid");
+});
+
 /**
  * FUNCTIONS
  */
 const openLogDialog = () => {
   LOG_DIALOG.toggleAttribute("open");
+  LOG_TITLE_INPUT.focus();
   console.log("Log create dialog opened");
 };
 
 const closeLogDialog = () => {
+  clearForm();
   LOG_DIALOG.toggleAttribute("open");
-  LOG_TITLE_INPUT.value = "";
-  LOG_BODY_INPUT.value = "";
   console.log("Log create dialog closed and inputs cleared");
 };
 
@@ -52,6 +68,19 @@ const addLog = () => {
   // Get input data
   const title = LOG_TITLE_INPUT.value;
   const body = LOG_BODY_INPUT.value;
+
+  // Ensure neither title nor body is empty
+  if (!title && !body) {
+    LOG_TITLE_INPUT.setAttribute("aria-invalid", "true");
+    LOG_BODY_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  } else if (!title) {
+    LOG_TITLE_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  } else if (!body) {
+    LOG_BODY_INPUT.setAttribute("aria-invalid", "true");
+    return;
+  }
 
   // Push data to logs
   logs.push({
@@ -65,13 +94,13 @@ const addLog = () => {
   console.log("Log created and saved");
 
   // Close dialog and clear inputs after submission
+  clearForm();
   LOG_DIALOG.toggleAttribute("open");
-  LOG_TITLE_INPUT.value = "";
-  LOG_BODY_INPUT.value = "";
   console.log("Log create dialog closed and inputs cleared");
 
-  // Render
+  // Render logs and toast notification
   renderLogs();
+  showToast("Log created successfully!", "success");
 };
 
 const renderLogs = () => {
@@ -112,7 +141,59 @@ const formatDate = (date) => {
   return logDate.toLocaleDateString("en-ZA");
 };
 
+const clearForm = () => {
+  LOG_TITLE_INPUT.value = "";
+  LOG_BODY_INPUT.value = "";
+  LOG_TITLE_INPUT.removeAttribute("aria-invalid");
+  LOG_BODY_INPUT.removeAttribute("aria-invalid");
+};
+
+const applyTheme = (theme) => {
+  PAGE_ROOT.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+  console.log(`Applied ${theme} theme`);
+};
+
+const updateTheme = (theme) => {
+  if (theme === "dark") {
+    THEME_TOGGLE_BTN.innerHTML = `
+      <ion-icon name="sunny-outline"></ion-icon> Toggle Light Theme
+    `;
+  } else {
+    THEME_TOGGLE_BTN.innerHTML = `
+      <ion-icon name="moon-outline"></ion-icon> Toggle Dark Theme
+    `;
+  }
+};
+
+const initTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+  updateTheme(savedTheme);
+};
+
+const showToast = (message, type = "success") => {
+  TOAST.innerHTML =
+    type === "success"
+      ? `<ion-icon name="checkmark-outline"></ion-icon> ${message}`
+      : `<ion-icon name="close-outline"></ion-icon> ${message}`;
+  TOAST.className = `${type}`;
+  TOAST.hidden = false;
+
+  void TOAST.offsetWidth; // Trigger reflow to restart animation
+  TOAST.classList.add("show");
+
+  // Hide after 2.5s with slide out effect
+  setTimeout(() => {
+    TOAST.classList.remove("show");
+    setTimeout(() => {
+      TOAST.hidden = true;
+    }, 400);
+  }, 2500);
+};
+
 /**
  * INITIALIZE APP
  */
+initTheme();
 renderLogs();
