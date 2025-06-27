@@ -11,6 +11,7 @@ const ADD_LOG_BTN = document.getElementById("add-log");
 const LOGS_SECTION = document.getElementById("logs");
 const THEME_TOGGLE_BTN = document.getElementById("theme-toggle");
 const PAGE_ROOT = document.querySelector("html");
+const TOAST = document.getElementById("toast");
 
 /**
  * DATA
@@ -97,8 +98,9 @@ const addLog = () => {
   LOG_DIALOG.toggleAttribute("open");
   console.log("Log create dialog closed and inputs cleared");
 
-  // Render
+  // Render logs and toast notification
   renderLogs();
+  showToast("Log created successfully!", "success");
 };
 
 const renderLogs = () => {
@@ -168,6 +170,26 @@ const initTheme = () => {
   const savedTheme = localStorage.getItem("theme") || "dark";
   applyTheme(savedTheme);
   updateTheme(savedTheme);
+};
+
+const showToast = (message, type = "success") => {
+  TOAST.innerHTML =
+    type === "success"
+      ? `<ion-icon name="checkmark-outline"></ion-icon> ${message}`
+      : `<ion-icon name="close-outline"></ion-icon> ${message}`;
+  TOAST.className = `${type}`;
+  TOAST.hidden = false;
+
+  void TOAST.offsetWidth; // Trigger reflow to restart animation
+  TOAST.classList.add("show");
+
+  // Hide after 2.5s with slide out effect
+  setTimeout(() => {
+    TOAST.classList.remove("show");
+    setTimeout(() => {
+      TOAST.hidden = true;
+    }, 400);
+  }, 2500);
 };
 
 /**

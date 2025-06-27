@@ -62,3 +62,41 @@ article:last-of-type {
     flex-direction: row;
   }
 }
+
+#toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  min-width: 220px;
+  background: #007a50; /* default: success */
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0.0145rem 0.029rem 0.174rem rgba(129, 145, 181, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(129, 145, 181, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(129, 145, 181, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(129, 145, 181, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(129, 145, 181, 0.04302),
+    0.5rem 1rem 6rem rgba(129, 145, 181, 0.06),
+    0 0 0 0.0625rem rgba(129, 145, 181, 0.015);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 2, 0.6, 1), opacity 0.3s;
+  z-index: 1000;
+}
+
+#toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#toast.success {
+  background: #007a50;
+}
+
+#toast.error {
+  background: rgb(183, 63, 59);
+}
