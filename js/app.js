@@ -46,6 +46,7 @@ LOG_BODY_INPUT.addEventListener("input", () => {
  */
 const openLogDialog = () => {
   LOG_DIALOG.toggleAttribute("open");
+  LOG_TITLE_INPUT.focus();
   console.log("Log create dialog opened");
 };
 
