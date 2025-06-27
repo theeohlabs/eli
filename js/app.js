@@ -9,6 +9,8 @@ const LOG_TITLE_INPUT = document.getElementById("log-title");
 const LOG_BODY_INPUT = document.getElementById("log-body");
 const ADD_LOG_BTN = document.getElementById("add-log");
 const LOGS_SECTION = document.getElementById("logs");
+const THEME_TOGGLE_BTN = document.getElementById("theme-toggle");
+const PAGE_ROOT = document.querySelector("html");
 
 /**
  * DATA
@@ -25,6 +27,11 @@ document.querySelector("body").addEventListener("click", (e) => {
   }
   if (e.target === CLOSE_LOG_DIALOG_BTN) {
     closeLogDialog();
+  }
+  if (e.target === THEME_TOGGLE_BTN) {
+    const currentTheme = PAGE_ROOT.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(newTheme);
   }
 });
 
@@ -139,7 +146,32 @@ const clearForm = () => {
   LOG_BODY_INPUT.removeAttribute("aria-invalid");
 };
 
+const applyTheme = (theme) => {
+  PAGE_ROOT.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+  console.log(`Applied ${theme} theme`);
+};
+
+const updateTheme = (theme) => {
+  if (theme === "dark") {
+    THEME_TOGGLE_BTN.innerHTML = `
+      <ion-icon name="sunny-outline"></ion-icon> Toggle Light Theme
+    `;
+  } else {
+    THEME_TOGGLE_BTN.innerHTML = `
+      <ion-icon name="moon-outline"></ion-icon> Toggle Dark Theme
+    `;
+  }
+};
+
+const initTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+  updateTheme(savedTheme);
+};
+
 /**
  * INITIALIZE APP
  */
+initTheme();
 renderLogs();

@@ -15,6 +15,15 @@ body {
   margin: 0;
 }
 
+button[type="button"],
+button[type="submit"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0;
+}
+
 main {
   flex: 1;
 }
@@ -41,5 +50,15 @@ article:last-of-type {
 }
 
 .footer {
-  text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (min-width: 450px) {
+  .footer {
+    flex-direction: row;
+  }
 }

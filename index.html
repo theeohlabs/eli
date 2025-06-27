@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,16 @@
     <link rel="stylesheet" href="./css/styles.css" />
     <!-- JS -->
     <script src="./js/app.js" defer></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+      defer
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+      defer
+    ></script>
   </head>
   <body>
     <header class="header">
@@ -19,7 +29,9 @@
         <h1>ELI</h1>
         <p>Everyday Log Input</p>
       </hgroup>
-      <button id="open-log-dialog" type="button">Create Log</button>
+      <button id="open-log-dialog" type="button">
+        <ion-icon name="document-text-outline"></ion-icon> Create Log
+      </button>
     </header>
 
     <main>
@@ -28,6 +40,7 @@
 
     <footer class="footer">
       <small>Developed by Theo Snyman</small>
+      <button id="theme-toggle" type="button"></button>
     </footer>
 
     <dialog id="log-dialog">
@@ -62,7 +75,9 @@
               </small>
             </label>
           </fieldset>
-          <input type="submit" value="Add" id="add-log" />
+          <button type="submit" id="add-log">
+            <ion-icon name="add-outline"></ion-icon> Add
+          </button>
         </form>
       </article>
     </dialog>
